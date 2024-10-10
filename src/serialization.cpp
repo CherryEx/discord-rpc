@@ -158,6 +158,29 @@ size_t JsonWriteRichPresenceObj(char* dest,
                     WriteOptionalString(writer, "spectate", presence->spectateSecret);
                 }
 
+                if (((presence->button1.label && presence->button1.label[0]) &&
+                     (presence->button1.url && presence->button1.url[0])) ||
+                    ((presence->button2.label && presence->button2.label[0]) &&
+                     (presence->button2.url && presence->button2.url[0]))) {
+                    WriteArray buttons(writer, "buttons");
+                    if ((presence->button1.label && presence->button1.label[0]) &&
+                        (presence->button1.url && presence->button1.url[0])) {
+                        WriteObject button1(writer);
+                        writer.Key("label");
+                        writer.String(presence->button1.label);
+                        writer.Key("url");
+                        writer.String(presence->button1.url);
+                    }
+                    if ((presence->button2.label && presence->button2.label[0]) &&
+                        (presence->button2.url && presence->button2.url[0])) {
+                        WriteObject button2(writer);
+                        writer.Key("label");
+                        writer.String(presence->button2.label);
+                        writer.Key("url");
+                        writer.String(presence->button2.url);
+                    }
+                }
+
                 writer.Key("instance");
                 writer.Bool(presence->instance != 0);
             }
